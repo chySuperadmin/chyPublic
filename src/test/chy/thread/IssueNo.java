@@ -1,15 +1,19 @@
 package test.chy.thread;
 
-import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Éú³ÉÏîÄ¿±àÂëºÍ Á¢Ïî±àÂë
+ * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  * @author chy_zpark
  *
  */
@@ -17,65 +21,75 @@ public class IssueNo implements Callable<String> {
 	
 	private Lock lock=new ReentrantLock();
 	
-	// ¶¨Òåµ±Ìì³õÊ¼»¯int
-	private static int number = 1;
+	// ï¿½ï¿½ï¿½åµ±ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½int
+	private static AtomicInteger number = new AtomicInteger(1);
 	
-	// ¶¨Òåµ±Ìì³õÊ¼»¯toDay
-	private static String toDay = new SimpleDateFormat("yyyyMMdd").format(new Date());
+	// ï¿½ï¿½ï¿½åµ±ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½toDay
+	private static StringBuffer toDay = new StringBuffer(newDate());
 	
-	// Ä£¿é¼ò³Æ
-	private static String moduleLogogram;
+	// Ä£ï¿½ï¿½ï¿½ï¿½
+	private static StringBuffer moduleLogogram;
 	
 	/**
-	 * Ä£¿é¼ò³ÆÈë²Î
+	 * Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @return
 	 */
-	public static String getModuleLogogram() {
+	public static StringBuffer getModuleLogogram() {
 		return moduleLogogram;
 	}
 
-	public static void setModuleLogogram(String moduleLogogram) {
+	public static void setModuleLogogram(StringBuffer moduleLogogram) {
 		IssueNo.moduleLogogram = moduleLogogram;
 	}
 	
 	/**
-	 *  Éú³É±àºÅ   Ä£¿é¼òÐ´+ÄêÔÂÈÕ+4Î»Á÷Ë®ºÅ
+	 *  ï¿½ï¿½ï¿½É±ï¿½ï¿½   Ä£ï¿½ï¿½ï¿½Ð´+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½+4Î»ï¿½ï¿½Ë®ï¿½ï¿½
 	 */
 	public String call() throws Exception {
 		try {
 			lock.lock();
-	    	String newDay = new SimpleDateFormat("yyyyMMdd").format(new Date());
 	    	
-	    	// Èç¹û²»ÊÇµ±Ìì±àÂë  ÖØÐÂÉú³ÉÈÕÆÚ;  Èç¹û µ±Ìì³¬³ö 9999Ôò Å×³öÒì³£
-	    	if(!toDay.equals(newDay)) {
+			StringBuffer newDay = newDate();
+	    	
+	    	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Çµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½;  ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ì³¬ï¿½ï¿½ 9999ï¿½ï¿½ ï¿½×³ï¿½ï¿½ì³£
+	    	if(!toDay.toString().equals(newDay.toString())) {
 	    		toDay = newDay;
-	    		number = 1;
-	    	}else if(number>9999){
-	    		throw new IllegalArgumentException("³¬³öµ±Ìì¿ÉÉú³ÉÁ¿");
+	    		number.set(1);
+	    	}else if(number.get()>19){
+	    		throw new IllegalArgumentException("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 	    	}
+	    	StringBuffer buffer = new StringBuffer(String.format("%04d", number.get()));
+	    	// Ã¿ï¿½Î»ï¿½È¡Ö®ï¿½ï¿½+1
+	    	number.incrementAndGet();
 	    	
-	    	String numStr = String.format("%04d", number);
-	    	
-	    	// Ã¿´Î»ñÈ¡Ö®ºó+1
-	    	number++;
-	    	
-	    	// ×Ö·ûÆ´½Ó
-	    	StringBuilder stringBuilder = new StringBuilder();
+	    	// ï¿½Ö·ï¿½Æ´ï¿½ï¿½
+	    	StringBuffer stringBuilder = new StringBuffer();
 	    	
 	    	if(moduleLogogram!=null) {
 	    		stringBuilder.append(moduleLogogram);
 	    	}
 	    	
-	        return stringBuilder.append(toDay).append(numStr).toString();
+	        return stringBuilder.append(toDay).append(buffer).toString();
 		}catch (Exception e) {
-			throw new IllegalArgumentException("³¬³öµ±Ìì¿ÉÉú³ÉÁ¿");
+			throw new IllegalArgumentException("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 		} finally {
 			lock.unlock();
 		}
     }
+	
+	private static StringBuffer newDate() {
+		LocalDateTime localDateTime = LocalDateTime.now();
+		Date date = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+		
+		Instant instant = date.toInstant();
+
+        LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+
+        return new StringBuffer(localDateTime.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+	}
  
     public static void main(String[] args){
-//    	setModuleLogogram("LX");
+    	setModuleLogogram(new StringBuffer("LX"));
         while(true) {
         	FutureTask<String> futureTask = new FutureTask<String>((Callable<String>) new IssueNo());
         	FutureTask<String> futureTask1 = new FutureTask<String>((Callable<String>) new IssueNo());
