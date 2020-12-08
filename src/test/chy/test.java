@@ -56,7 +56,7 @@ public class test {
 	}
 	
 	public void throwsTest() {
-		System.out.println(1111);
+		System.out.println(111111);
 	}
 	
     public static void binaryTools() {
