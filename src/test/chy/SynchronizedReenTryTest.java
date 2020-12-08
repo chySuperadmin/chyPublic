@@ -8,7 +8,7 @@ public class SynchronizedReenTryTest extends SuperXttblog {
 
 	    public synchronized void doSomething() {
 	        System.out.println("child.doSomething()" + Thread.currentThread().getName());
-	        doAnotherThing(); // 调用自己类中其他的synchronized方法11222
+	        doAnotherThing(); // 调用自己类中其他的synchronized方法33
 	    }
 
 	    private synchronized void doAnotherThing() {
