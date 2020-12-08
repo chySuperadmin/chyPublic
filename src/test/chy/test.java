@@ -57,10 +57,7 @@ public class test {
 	
 	public void throwsTest() {
 		System.out.println(111111);
-<<<<<<< HEAD
 		System.out.println(22222);
-=======
->>>>>>> branch 'master' of https://github.com/chySuperadmin/chyPublic.git
 	}
 	
     public static void binaryTools() {
