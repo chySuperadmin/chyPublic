@@ -59,7 +59,6 @@ public class test {
 		System.out.println(111111);
 		System.out.println(22222333);
 		System.out.println(22222);
-		System.out.println(22222);
 	}
 	
     public static void binaryTools() {
