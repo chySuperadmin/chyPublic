@@ -15,6 +15,7 @@ public class SynchronizedReenTryTest extends SuperXttblog {
 	    private synchronized void doAnotherThing() {
 	        super.doSomething(); // 调用父类的synchronized方法
 	        System.out.println("child.doAnotherThing()" + Thread.currentThread().getName());
+	        System.out.println("child.doAnotherThing()" + Thread.currentThread().getName());
 	    }
 	}
 
