@@ -56,7 +56,7 @@ public class test {
 	}
 	
 	public void throwsTest() {
-		System.out.println(000000);
+		System.out.println(11111);
 		System.out.println(111111);
 		System.out.println(22222333);
 		System.out.println(22222);
